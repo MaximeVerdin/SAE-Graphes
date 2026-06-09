@@ -55,7 +55,7 @@ class Grille:
         '''
         for motif in self.__liste:
             for case in motif:
-                if c.__eq__(case):
+                if c.getPosition() == case.getPosition():
                     return case
 
     def setContenue(self, case: Case, valeur: int | None) -> None:
