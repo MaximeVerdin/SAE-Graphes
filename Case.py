@@ -20,3 +20,5 @@ class Case:
     def getPosition(self) -> tuple:
         '''Méthode publique, renvoie la position de l'objet : tuple (x, y)'''
         return (self.__abscisse, self.ordonne)
+    
+    
