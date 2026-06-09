@@ -13,13 +13,13 @@ class Grille:
         self.__liste : list[Motif] = []
 
 
-
     def getNombreMotif(self) -> int:
         """
         Retourne le nombre de motifs dans la grille
         :return: Un entier représentant le nombre de motifs
         """
         return len(self.__liste)
+
 
     def addMotif(self, motif : Motif) -> None:
         """
@@ -28,6 +28,7 @@ class Grille:
         :return:
         """
         self.__liste.append(motif)
+
 
     def removeMotif(self, motif : Motif) -> None:
         """
@@ -50,6 +51,7 @@ class Grille:
                     return motif
         return None
 
+
     def getCase(self, c: Case) -> Case | None:
         """
         Retourne la case nécessaire dans la grille
@@ -62,6 +64,7 @@ class Grille:
                     return case
         return None
 
+
     def getCases(self) -> list[Case]:
         """
         Renvoie l'ensemble des cases de la grille
@@ -71,6 +74,7 @@ class Grille:
         for motif in self.__liste:
             liste += motif.getCases()
         return liste
+
 
     def setContenue(self, case: Case) -> None:
         """
@@ -83,6 +87,7 @@ class Grille:
         if motif:
             motif.getCase(case.getPosition()[0], case.getPosition()[1]).setContenu(case.getContenu())
 
+
     def getContenue(self, case: Case) -> int | None:
         """
         Donne la valeur de la case
@@ -93,6 +98,7 @@ class Grille:
         if motif:
             return motif.getCase(case.getPosition()[0], case.getPosition()[1]).getContenu()
         return None
+
 
     def chargerGrilleFromJson(self, file: str) -> None:
         """
@@ -124,6 +130,7 @@ class Grille:
             dico[nom_motif] = liste_case_dico
 
         return dico
+
 
     def sauvegarderGrilleToJson(self, file: str) -> None:
         """
