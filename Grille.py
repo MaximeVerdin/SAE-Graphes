@@ -4,6 +4,9 @@ from Motif import *
 from Case import Case
 
 class Grille:
+    """
+    Cette classe est le modèle représentant une grille de données
+    """
     def __init__(self):
         self.__largeur : int = 0
         self.__longueur : int = 0
@@ -60,6 +63,10 @@ class Grille:
         return None
 
     def getCases(self) -> list[Case]:
+        """
+        Renvoie l'ensemble des cases de la grille
+        :return: Une liste représentant toutes les cases de la grille
+        """
         liste: list[Case] = []
         for motif in self.__liste:
             liste += motif.getCases()
@@ -136,3 +143,4 @@ if __name__ == "__main__":
     print(grille.getContenue(Case(0,7)))
     grille.setContenue(Case(0,7, None))
     print(grille.getContenue(Case(0,7)))
+    print(grille.getCases())
