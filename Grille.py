@@ -59,7 +59,13 @@ class Grille:
                     return case
         return None
 
-    def setContenue(self, case: Case, valeur: int | None) -> None:
+    def getCases(self) -> list[Case]:
+        liste: list[Case] = []
+        for motif in self.__liste:
+            liste += motif.getCases()
+        return liste
+
+    def setContenue(self, case: Case) -> None:
         """
         Change la valeur de la case
         :param case: La case à changer
@@ -68,7 +74,7 @@ class Grille:
         """
         motif = self.getMotifFromCase(case)
         if motif:
-            motif.getCase(case.getPosition()[0], case.getPosition()[1]).setContenu(valeur)
+            motif.getCase(case.getPosition()[0], case.getPosition()[1]).setContenu(case.getContenu())
 
     def getContenue(self, case: Case) -> int | None:
         """
@@ -126,4 +132,7 @@ class Grille:
 if __name__ == "__main__":
     grille = Grille()
     grille.chargerGrilleFromJson("grilles/grille1.json")
-    grille.sauvegarderGrilleToJson("grilles/grille1_new.json")
+    #grille.sauvegarderGrilleToJson("grilles/grille1_new.json")
+    print(grille.getContenue(Case(0,7)))
+    grille.setContenue(Case(0,7, None))
+    print(grille.getContenue(Case(0,7)))
