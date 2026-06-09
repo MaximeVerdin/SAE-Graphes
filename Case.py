@@ -8,8 +8,8 @@ class Case:
 
 
     def setContenu(self, cakechose: int | None) -> None:
-        '''Méthode publique, affecte le __contenu de l'objet.'''
-        self.__contenu = cakechose
+        '''Méthode publique, affecte le contenu de l'objet.'''
+        self.contenu = cakechose
 
 
     def getContenu(self) -> int:
