@@ -114,4 +114,4 @@ class Grille:
         '''
 
         with open(file, 'w') as json_file:
-            json.dump(self.toDico(), json_file, indent=4)
+            json.dumps(self.toDico(), json_file, indent=4)
