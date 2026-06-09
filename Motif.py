@@ -5,8 +5,6 @@ class Motif(object) :
     '''Classe définissant une case à partir de sa position : x, y.'''
 
 
-    
-    
     def __init__(self):
         
         self.__liste_cases: list[Case] = []
@@ -63,22 +61,19 @@ class Motif(object) :
             if c.getContenu() == case.getContenu() and c.getPosition() != case.getPosition() :
                 return False
         return True
-    
-    
-        
-        
-    @staticmethod
-    def buildMotifFromListe(l: list) -> Motif:
-        
-        '''
-        remplie un motif avec toutes les cases qu'il contient
-        :param l: Liste contenant les cases sous forme de listes.
-        :return: retourne un motif
-        '''
-        motif = Motif()
-        for case in l:
-            motif.ajouterCase(Case(case[0],case[1],case[2]))
-        return motif     
+
+
+def buildMotifFromListe(l: list) -> Motif:
+
+    '''
+    remplie un motif avec toutes les cases qu'il contient
+    :param l: Liste contenant les cases sous forme de listes.
+    :return: retourne un motif
+    '''
+    motif = Motif()
+    for case in l:
+        motif.ajouterCase(Case(case[0],case[1],case[2]))
+    return motif
     
        
         

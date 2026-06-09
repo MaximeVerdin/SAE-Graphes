@@ -12,7 +12,7 @@ class Case:
         self.__contenu = cakechose
 
 
-    def getContenu(self) -> int:
+    def getContenu(self) -> int | None:
         '''Méthode publique, renvoie le __contenu de l'objet.'''
         return self.__contenu
 
@@ -26,4 +26,4 @@ class Case:
         Retourne une liste de l'objet
         :return: (x, y, valeur)
         '''
-        return [self.__abscisse, self.__ordonne, self.__contenu]
+        return [self.__abscisse, self.__ordonne, self.__contenu if self.__contenu else 0]

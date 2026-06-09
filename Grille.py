@@ -1,6 +1,6 @@
 import json
 
-from Motif import Motif
+from Motif import *
 from Case import Case
 
 class Grille:
@@ -76,7 +76,10 @@ class Grille:
         :param case: La case dont on souhaite récupérer la valeur
         :return:
         """
-        pass
+        motif = self.getMotifFromCase(case)
+        if motif:
+            return motif.getCase(case.getPosition()[0], case.getPosition()[1]).getContenu()
+        return None
 
     def chargerGrilleFromJson(self, file: str) -> None:
         """
@@ -87,7 +90,7 @@ class Grille:
         with open(file) as json_file:
             data = json.load(json_file)
             for valeur in data.values():
-                self.addMotif(Motif.buildMotifFromListe(valeur))
+                self.addMotif(buildMotifFromListe(valeur))
 
 
     def toDico(self) -> dict:
@@ -118,3 +121,9 @@ class Grille:
 
         with open(file, 'w') as json_file:
             json.dump(self.toDico(), json_file, indent=4)
+
+
+if __name__ == "__main__":
+    grille = Grille()
+    grille.chargerGrilleFromJson("grilles/grille1.json")
+    grille.sauvegarderGrilleToJson("grilles/grille1_new.json")
