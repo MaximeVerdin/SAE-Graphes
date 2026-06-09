@@ -1,10 +1,10 @@
 class Case:
-    def init(self, x: int, y: int):
+    def init(self, x: int, y: int, c: int):
         '''Méthode dédiée, constructeur de la classe'''
 
         self.abscisse: int = x
         self.ordonne: int = y
-        self.contenu : int | None = None
+        self.contenu : int | None = None if c == 0 else c
 
 
     def setContenu(self, cakechose: int) -> None:
