@@ -40,7 +40,7 @@ class Motif(object) :
            :return: un objet de type Case
         '''
         for case in self.__liste_cases:
-            if case.getPosition == (x,y):
+            if case.getPosition() == (x,y):
                 return case
         return None
     
@@ -52,20 +52,23 @@ class Motif(object) :
         return len(self.__liste_cases)
     
     
-    def contenuValide(self)->bool:
+    def contenuValide(self,c :Case)->bool:
         '''retourne false,ainsi que la case concerne si le contenu de la case n'est pas valide (le contenu est supérieur à la taille du motif)
            :return: un boolean       
         '''
+        if c.contenu > self.tailleMotif() or c.contenu < 1:
+            return False
+        
         for case in self.__liste_cases:
-            if case.contenu > self.tailleMotif():
-                return (False,case)
+            if c.getContenu() == case.getContenu() and c.getPosition() != case.getPosition() :
+                return False
         return True
     
     
         
         
     @staticmethod
-    def buildMotifFromListe(l: list) ->Motif:
+    def buildMotifFromListe(l: list) -> Motif:
         
         '''
         remplie un motif avec toutes les cases qu'il contient
