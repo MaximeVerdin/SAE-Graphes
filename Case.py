@@ -1,5 +1,5 @@
 class Case:
-    def init(self, x: int, y: int, c: int):
+    def __init__(self, x: int, y: int, c: int = 0) -> None:
         '''Méthode dédiée, constructeur de la classe'''
 
         self.abscisse: int = x
