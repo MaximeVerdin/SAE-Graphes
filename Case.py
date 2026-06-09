@@ -7,7 +7,7 @@ class Case:
         self.contenu : int | None = None if c == 0 else c
 
 
-    def setContenu(self, cakechose: int) -> None:
+    def setContenu(self, cakechose: int | None) -> None:
         '''Méthode publique, affecte le contenu de l'objet.'''
         self.contenu = cakechose
 
