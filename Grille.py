@@ -151,3 +151,4 @@ if __name__ == "__main__":
     grille.setContenue(Case(0,7, None))
     print(grille.getContenue(Case(0,7)))
     print(grille.getCases())
+    print(grille.getCase(Case(0,7)))
