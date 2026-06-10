@@ -12,6 +12,15 @@ class Grille:
         self.__longueur : int = 0
         self.__liste : list[Motif] = []
 
+    def estValide(self) -> bool:
+        """
+        Verifie si la grille est valide
+        :return: Retourne True si la grille est valide
+        """
+        for motif in self.__liste:
+            if not motif.estValide():
+                return False
+        return True
 
     def getNombreMotif(self) -> int:
         """
@@ -149,13 +158,38 @@ class Grille:
         with open(file, 'w') as json_file:
             json.dump(self.toDico(), json_file, indent=4)
 
+    def afficherGrille(self):
+        # récupération de toutes les cases
+        cases = []
+        for motif in self.__liste:
+            cases.extend(motif.getCases())
+
+        # calcul des dimensions de la grille
+        max_x = max(case.getPosition()[0] for case in cases)
+        max_y = max(case.getPosition()[1] for case in cases)
+
+        # création de la grille vide
+        grille = [["." for _ in range(max_x + 1)] for _ in range(max_y + 1)]
+
+        # remplissage de la grille
+        for case in cases:
+            x, y = case.getPosition()
+            grille[y][x] = str(case.getContenu()) if case.getContenu() else "."
+
+        # affichage
+        for ligne in grille:
+            print(" ".join(ligne))
 
 if __name__ == "__main__":
     grille = Grille()
     grille.chargerGrilleFromJson("grilles/grille1.json")
     #grille.sauvegarderGrilleToJson("grilles/grille1_new.json")
-    print(grille.getContenue(Case(0,7)))
-    grille.setContenue(Case(0,7, None))
-    print(grille.getContenue(Case(0,7)))
-    print(grille.getCases())
-    print(grille.getCase(Case(0,7)))
+    #print(grille.getContenue(Case(0,7)))
+    #grille.setContenue(Case(0,7, None))
+    #print(grille.getContenue(Case(0,7)))
+    #print(grille.getCases())
+    #print(grille.getCase(Case(0,7)))
+    #case_a = Case(1, 7, 3)
+    #grille.setContenue(case_a)
+    grille.afficherGrille()
+    #print(grille.estValide())

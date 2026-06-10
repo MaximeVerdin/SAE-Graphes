@@ -5,6 +5,14 @@ class Case:
         self.__abscisse: int = x
         self.__ordonne: int = y
         self.__contenu : int | None = None if c == 0 else c
+        self.__fixe : bool = True if self.__contenu else False
+
+    def estFixe(self):
+        """
+        Retourne True si la case est fixe par rapport à la source, False sinon.
+        :return: Retourne True si la case est fixe
+        """
+        return self.__fixe
 
 
     def setContenu(self, cakechose: int | None) -> None:
