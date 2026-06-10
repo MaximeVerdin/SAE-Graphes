@@ -10,7 +10,7 @@ class Motif(object) :
         
     def estValide(self) -> bool:
         """
-        Verifie si la grille est valide
+        Verifie si le motif est valide
         :return: Retourne True si la grille est valide, False sinon
         """
         liste_valeurs = []
@@ -20,6 +20,18 @@ class Motif(object) :
             else:
                 return False
         return True
+
+    def estPlein(self):
+        """
+        Verifie si le motif est plein
+        :return: Retourne True si la grille est plein, False sinon
+        """
+        liste_valeurs = []
+        for case in self.__liste_cases:
+            if not case.getContenu() in liste_valeurs:
+                liste_valeurs.append(case.getContenu())
+                
+        return len(liste_valeurs) == self.tailleMotif()
         
     def ajouterCase(self,c : Case) ->None:
         """ajoute une case du motif
