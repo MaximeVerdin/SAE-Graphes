@@ -90,17 +90,40 @@ class Grille:
 
         for case in self.getCases():
 
-            if case.contenu is None:
-                continue
-
-            for voisin in self.getVoisins(case):
-
-                if voisin.contenu == case.contenu:
-                    return False
-
+    def estPleine(self):
+        """
+        Verifie si la grille est complete
+        :return: Retourne True si la grille est complete
+        """
+        for motif in self.__liste:
+            if not motif.estPlein():
+                return False
         return True
 
-    def estPleine(self) -> bool:
+    def getNombreMotif(self) -> int:
+        """
+        Retourne le nombre de motifs dans la grille
+        :return: Un entier représentant le nombre de motifs
+        """
+        return len(self.__liste)
+
+
+    def addMotif(self, motif : Motif) -> None:
+        """
+        Ajoute un motif à la grille
+        :param motif: Le motif à ajouter
+        :return:
+        """
+        self.__liste.append(motif)
+
+
+    def removeMotif(self, motif : Motif) -> None:
+        """
+        Retire un motif de la grille
+        :param motif: Le motif à retirer
+        :return:
+        """
+        self.__liste.remove(motif)
 
         return all(
             motif.estPlein()
@@ -144,8 +167,10 @@ class Grille:
             )
 
     def afficherGrille(self):
-
-        cases = self.getCases()
+        # récupération de toutes les cases
+        cases = []
+        for motif in self.__liste:
+            cases.extend(motif.getCases())
 
         if not cases:
             return
