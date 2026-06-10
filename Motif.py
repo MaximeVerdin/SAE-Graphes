@@ -4,10 +4,6 @@ from Case import Case
 class Motif(object) :
     """Classe définissant une case à partir de sa position : x, y."""
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 516f54c9c2b8134a04ff9b76234a50c6c4e0fb35
     def __init__(self):
         
         self.__liste_cases: list[Case] = []
@@ -56,7 +52,7 @@ class Motif(object) :
     def contenuValide(self,c :Case)->bool:
         """retourne false,ainsi que la case concerne si le contenu de la case n'est pas valide (le contenu est supérieur à la taille du motif)
            :return: un boolean       
-        '''
+        """
         if c.getContenu() > self.tailleMotif() or c.getContenu() < 1:
             return False
         
