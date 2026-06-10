@@ -5,7 +5,9 @@ from Motif import Motif, buildMotifFromListe
 
 
 class Grille:
-
+    """
+    Cette classe est le modèle représentant une grille de données
+    """
     def __init__(self):
 
         self._motifs: list[Motif] = []
