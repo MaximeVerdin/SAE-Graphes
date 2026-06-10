@@ -8,7 +8,18 @@ class Motif(object) :
         
         self.__liste_cases: list[Case] = []
         
-        
+    def estValide(self) -> bool:
+        """
+        Verifie si la grille est valide
+        :return: Retourne True si la grille est valide, False sinon
+        """
+        liste_valeurs = []
+        for case in self.__liste_cases:
+            if not case.getContenu() in liste_valeurs or not(case.getContenu()):
+                liste_valeurs.append(case.getContenu())
+            else:
+                return False
+        return True
         
     def ajouterCase(self,c : Case) ->None:
         """ajoute une case du motif
