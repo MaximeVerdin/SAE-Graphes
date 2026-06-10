@@ -28,7 +28,7 @@ class Motif(object) :
         """
         liste_valeurs = []
         for case in self.__liste_cases:
-            if not case.getContenu() in liste_valeurs:
+            if not case.getContenu() in liste_valeurs and not case.getPosition():
                 liste_valeurs.append(case.getContenu())
                 
         return len(liste_valeurs) == self.tailleMotif()

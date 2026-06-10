@@ -203,3 +203,4 @@ if __name__ == "__main__":
     #grille.setContenue(case_a)
     grille.afficherGrille()
     #print(grille.estValide())
+    #print(grille.estPleine())
