@@ -22,6 +22,14 @@ class Grille:
                 return False
         return True
 
+    def estPleine(self):
+        """
+        Verifie si la grille est complete
+        :return: Retourne True si la grille est complete
+        """
+        for motif in self.__liste:
+
+
     def getNombreMotif(self) -> int:
         """
         Retourne le nombre de motifs dans la grille
