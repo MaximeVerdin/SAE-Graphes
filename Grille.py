@@ -51,6 +51,13 @@ class Grille:
                     return motif
         return None
 
+    def getMotifs(self):
+        """
+        Retourne une liste de motifs
+        :return: La liste des motifs de la grille
+        """
+        return self.__liste
+
 
     def getCase(self, c: Case) -> Case | None:
         """
