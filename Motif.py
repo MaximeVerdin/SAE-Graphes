@@ -7,7 +7,8 @@ class Motif(object) :
     def __init__(self):
         
         self.__liste_cases: list[Case] = []
-        
+
+
     def estValide(self) -> bool:
         """
         Verifie si le motif est valide
@@ -21,6 +22,7 @@ class Motif(object) :
                 return False
         return True
 
+
     def estPlein(self):
         """
         Verifie si le motif est plein
@@ -32,7 +34,8 @@ class Motif(object) :
                 liste_valeurs.append(case.getContenu())
                 
         return len(liste_valeurs) == self.tailleMotif()
-        
+
+
     def ajouterCase(self,c : Case) ->None:
         """ajoute une case du motif
             :param c: un objet de type Case"""
@@ -86,7 +89,6 @@ class Motif(object) :
 
 
 def buildMotifFromListe(l: list) -> Motif:
-
     """
     remplie un motif avec toutes les cases qu'il contient
     :param l: Liste contenant les cases sous forme de listes.

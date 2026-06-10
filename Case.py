@@ -14,7 +14,6 @@ class Case:
         """
         return self.__fixe
 
-
     def setContenu(self, cakechose: int | None) -> None:
         """Méthode publique, affecte le __contenu de l'objet."""
         self.__contenu = cakechose

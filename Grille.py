@@ -12,6 +12,7 @@ class Grille:
         self.__longueur : int = 0
         self.__liste : list[Motif] = []
 
+
     def estValide(self) -> bool:
         """
         Verifie si la grille est valide
@@ -22,6 +23,7 @@ class Grille:
                 return False
         return True
 
+
     def estPleine(self):
         """
         Verifie si la grille est complete
@@ -31,6 +33,7 @@ class Grille:
             if not motif.estPlein():
                 return False
         return True
+
 
     def getNombreMotif(self) -> int:
         """
@@ -168,7 +171,12 @@ class Grille:
         with open(file, 'w') as json_file:
             json.dump(self.toDico(), json_file, indent=4)
 
+
     def afficherGrille(self):
+        """
+        Permet d'afficher la grille
+        :return:
+        """
         # récupération de toutes les cases
         cases = []
         for motif in self.__liste:
