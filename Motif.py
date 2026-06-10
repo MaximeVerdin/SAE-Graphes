@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from Case import Case
 
-class Motif:
+class Motif(object) :
+    """Classe définissant une case à partir de sa position : x, y."""
 
     def __init__(self):
         self._cases: list[Case] = []
@@ -68,6 +69,11 @@ class Motif:
 
 def buildMotifFromListe(liste: list) -> Motif:
 
+    """
+    remplie un motif avec toutes les cases qu'il contient
+    :param l: Liste contenant les cases sous forme de listes.
+    :return: retourne un motif
+    """
     motif = Motif()
 
     for x, y, valeur in liste:
