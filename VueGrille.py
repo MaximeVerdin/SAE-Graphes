@@ -9,7 +9,7 @@ from Grille import Grille
 
 class VueGrille(QWidget):
 
-    caseCliquee: pyqtSignal = pyqtSignal(int, int)  # x=col, y=ligne
+    caseCliquee = pyqtSignal(int, int)  # x=col, y=ligne
 
     def __init__(self, grille: Grille):
         super().__init__()
@@ -21,12 +21,10 @@ class VueGrille(QWidget):
         self.case_selectionnee = None  # (x, y)
 
         self.setWindowTitle("Vue Grille")
+        self.show()
 
     def resizeEvent(self, event):
         self.update()
-
-    def getGrille(self) -> Grille:
-        return self.grille
 
     def calculer_taille_case(self):
         cases = self.grille.getCases()
@@ -100,10 +98,7 @@ class VueGrille(QWidget):
             x = dx + sel_x * self.taille_case
             y = dy + sel_y * self.taille_case
 
-            if not self.grille.getCase(self.case_selectionnee[0], self.case_selectionnee[1]).fixe:
-                overlay = QColor(255, 165, 0, 100)
-            else:
-                overlay = QColor(255, 0, 0, 100)
+            overlay = QColor(255, 165, 0, 100)
 
             painter.fillRect(
                 x,
@@ -114,7 +109,7 @@ class VueGrille(QWidget):
             )
 
         pen = QPen(Qt.GlobalColor.black)
-        pen.setWidth(max(2, self.taille_case // 15))
+        pen.setWidth(max(1, self.taille_case // 15))
         painter.setPen(pen)
 
         for motif in self.grille.getMotifs():
