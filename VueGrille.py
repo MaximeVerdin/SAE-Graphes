@@ -2,9 +2,9 @@ import sys
 
 from PyQt6.QtWidgets import QWidget, QApplication, QGridLayout
 
-from Case import Case
-from Grille import Grille
-from Motif import Motif
+from Case_old import Case
+from Grille_old import Grille
+from Motif_old import Motif
 from VueMotif import VueMotif
 
 
