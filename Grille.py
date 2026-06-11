@@ -119,6 +119,35 @@ class Grille:
                     buildMotifFromListe(valeur)
                 )
 
+    def chargerSaveFromJson(self, fichier: str) -> None:
+
+        self._motifs.clear()
+        self._cases.clear()
+
+        with open(fichier, encoding="utf-8") as f:
+            data = json.load(f)
+
+        motifs_data = data.get("motif", {})
+
+        for nom_motif, liste_cases in motifs_data.items():
+
+            motif = Motif()
+
+            for x, y, valeur, fixe in liste_cases:
+                case = Case(
+                    x=x,
+                    y=y,
+                    contenu = None if valeur == 0 else valeur,
+                    motif = motif
+                )
+
+                case.fixe = fixe
+
+                motif.ajouterCase(case)
+                self._cases[(x, y)] = case
+
+            self._motifs.append(motif)
+
     def toDico(self) -> dict:
 
         resultat = {}
