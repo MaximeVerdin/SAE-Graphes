@@ -1,6 +1,6 @@
 
 import sys
-from PyQt6.QtCore import QUrl, Qt
+from PyQt6.QtCore import QUrl, Qt,pyqtSignal
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget,QLabel
 )
@@ -8,6 +8,10 @@ from PyQt6.QtGui import QDesktopServices
 
 
 class VueMenu(QWidget):
+    
+    #signal 
+    
+    ouvrirUrlClicked = pyqtSignal() 
 
     def __init__(self):
         super().__init__()
