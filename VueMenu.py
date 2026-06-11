@@ -1,14 +1,11 @@
 
 import sys
-from PyQt6.QtCore import QDate, pyqtSignal,QUrl
-from PyQt6.QtWidgets import QComboBox, QLineEdit, QDateEdit, QTextEdit, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QCheckBox ,QPushButton,QStackedWidget
+from PyQt6.QtCore import QUrl, Qt
+from PyQt6.QtWidgets import (
+    QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget,QLabel
+)
 from PyQt6.QtGui import QDesktopServices
 
-
-
-
-from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget
-from PyQt6.QtCore import Qt
 
 class VueMenu(QWidget):
 
@@ -18,7 +15,6 @@ class VueMenu(QWidget):
         self.setWindowTitle("Jeu de suguru")
         self.setStyleSheet("background-color: #C2C2C2")
 
-        
         self.stack = QStackedWidget()
         main_layout = QVBoxLayout(self)
         main_layout.addWidget(self.stack)
@@ -37,6 +33,7 @@ class VueMenu(QWidget):
 
         self.boutonJouer = QPushButton("Jouer")
         self.boutonJouer.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonJouer.clicked.connect(lambda: self.stack.setCurrentWidget(self.page3))
 
         self.boutonParam = QPushButton("Paramètre")
         self.boutonParam.setStyleSheet("background-color: #AFAFAF;")
@@ -60,92 +57,107 @@ class VueMenu(QWidget):
         hlayout2.addLayout(vlayout2)
         vlayout1.addLayout(hlayout2)
 
-       # page param
+        # page param
         self.page2 = QWidget()
-
-        # Layout principal vertical (pour centrer verticalement)
-        vlayout_page = QVBoxLayout(self.page2)
-
-        # Layout horizontal pour centrer la colonne
-        hlayout_center = QHBoxLayout()
-
-        # Layout vertical contenant les 3 boutons
-        vlayout_buttons = QVBoxLayout()
+        self.espace2 = QLabel(" ")
+        vlayout_page2 = QVBoxLayout(self.page2)
+        hlayout_centre2 = QHBoxLayout()
+        vlayout_bouton2 = QVBoxLayout()
 
         self.boutonClair = QPushButton("Thème clair")
         self.boutonClair.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonClair.clicked.connect(self.themeClaire)
 
         self.boutonSombre = QPushButton("Thème sombre")
         self.boutonSombre.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonSombre.clicked.connect(self.themeSombre)
 
-        self.boutonRetour = QPushButton("Retour")
-        self.boutonRetour.setStyleSheet("background-color: #AFAFAF;")
-        self.boutonRetour.clicked.connect(lambda: self.stack.setCurrentWidget(self.page1))
+        self.boutonRetour2 = QPushButton("Retour")
+        self.boutonRetour2.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonRetour2.clicked.connect(lambda: self.stack.setCurrentWidget(self.page1))
 
-        # Ajouter les boutons dans la colonne
-        vlayout_buttons.addWidget(self.boutonClair)
-        vlayout_buttons.addWidget(self.boutonSombre)
-        vlayout_buttons.addWidget(self.boutonRetour)
+        vlayout_bouton2.addWidget(self.boutonClair)
+        vlayout_bouton2.addWidget(self.boutonSombre)
+        vlayout_bouton2.addWidget(self.boutonRetour2)
 
-        # Centrer horizontalement la colonne
-        hlayout_center.addStretch(1)
-        hlayout_center.addLayout(vlayout_buttons)
-        hlayout_center.addStretch(1)
+        hlayout_centre2.addStretch(1)
+        hlayout_centre2.addLayout(vlayout_bouton2)
+        hlayout_centre2.addStretch(1)
 
-        # Centrer verticalement
-        vlayout_page.addStretch(1)
-        vlayout_page.addLayout(hlayout_center)
-        vlayout_page.addStretch(1)
+        vlayout_page2.addStretch(1)
+        vlayout_page2.addWidget(self.espace2)
+        vlayout_page2.addLayout(hlayout_centre2)
+        vlayout_page2.addStretch(1)
 
-        
+        # page 3 jouer :
+        self.page3 = QWidget()
+        self.espace3 = QLabel(" ")
+        vlayout_page3 = QVBoxLayout(self.page3)
+        hlayout_centre3 = QHBoxLayout()
+        vlayout_bouton3 = QVBoxLayout()
+
+        self.boutonNouveau = QPushButton("Nouvelle partie")
+        self.boutonNouveau.setStyleSheet("background-color: #AFAFAF;")
+
+        self.boutonCharger = QPushButton("Charger partie")
+        self.boutonCharger.setStyleSheet("background-color: #AFAFAF;")
+
+        self.boutonRetour3 = QPushButton("Retour")
+        self.boutonRetour3.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonRetour3.clicked.connect(lambda: self.stack.setCurrentWidget(self.page1))
+
+        vlayout_bouton3.addWidget(self.boutonNouveau)
+        vlayout_bouton3.addWidget(self.boutonCharger)
+        vlayout_bouton3.addWidget(self.boutonRetour3)
+
+        hlayout_centre3.addStretch(1)
+        hlayout_centre3.addLayout(vlayout_bouton3)
+        hlayout_centre3.addStretch(1)
+
+        vlayout_page3.addStretch(1)
+        vlayout_page3.addWidget(self.espace3)
+        vlayout_page3.addLayout(hlayout_centre3)
+        vlayout_page3.addStretch(1)
+
         # ajout dans le stacked widget
         self.stack.addWidget(self.page1)
         self.stack.addWidget(self.page2)
+        self.stack.addWidget(self.page3)
 
         self.show()
 
-            
-            
-            
     def redimensionner_boutons(self):
-        """Ajuste la taille des boutons en fonction de la taille de la fenêtre."""
-        largeur = self.width() // 4   # moitié de la largeur de la fenêtre
-        hauteur = self.height() // 10 # 1/10 de la hauteur de la fenêtre
+        largeur = max(120, min(self.width() // 4, 600))
+        hauteur = max(30, min(self.height() // 10, 150))
 
-        for bouton in (self.boutonJouer, self.boutonParam,self.boutonQuitter,self.boutonClair,self.boutonSombre,self.boutonRetour):
+        for bouton in (
+            self.boutonJouer,
+            self.boutonParam,
+            self.boutonQuitter,
+            self.boutonClair,
+            self.boutonSombre,
+            self.boutonRetour2,
+            self.boutonNouveau,
+            self.boutonCharger,
+            self.boutonRetour3
+        ):
             bouton.setFixedSize(largeur, hauteur)
 
     def resizeEvent(self, event):
-        """Appelé automatiquement à chaque redimensionnement."""
         self.redimensionner_boutons()
-        super().resizeEvent(event)  
-            
-            
-    def ouvrir_url_regle(self):
-        self.ouvrirUrlClicked.emit()  
-            
-            
-    def quitter_application(self):
-        self.quitterAppClicked.emit()
-            
-        
-    def param(self):
-        self.ParamClicked.emit()
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        super().resizeEvent(event)
+
+    def themeClaire(self):
+        with open(sys.path[0] + "/fichiers_qss/Integrid.qss", "r") as f:
+            self.setStyleSheet(f.read())
+            self.redimensionner_boutons()
+
+    def themeSombre(self):
+        with open(sys.path[0] + "/fichiers_qss/Combinear.qss", "r") as f:
+            self.setStyleSheet(f.read())
+            self.redimensionner_boutons()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     widget = VueMenu()

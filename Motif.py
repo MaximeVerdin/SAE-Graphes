@@ -2,7 +2,7 @@
 from Case import Case
 
 class Motif(object) :
-    """Classe définissant une case à partir de sa position : x, y."""
+    """Classe définnisant un motif composé d'objet de type Case"""
 
     def __init__(self):
         
