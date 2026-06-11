@@ -1,205 +1,168 @@
 import json
 
-from Motif import *
 from Case import Case
+from Motif import Motif, buildMotifFromListe
+
 
 class Grille:
-    """
-    Cette classe est le modèle représentant une grille de données
-    """
+
     def __init__(self):
-        self.__largeur : int = 0
-        self.__longueur : int = 0
-        self.__liste : list[Motif] = []
 
-    def estValide(self) -> bool:
-        """
-        Verifie si la grille est valide
-        :return: Retourne True si la grille est valide
-        """
-        for motif in self.__liste:
-            if not motif.estValide():
-                return False
-        return True
+        self._motifs: list[Motif] = []
 
-    def estPleine(self):
-        """
-        Verifie si la grille est complete
-        :return: Retourne True si la grille est complete
-        """
-        for motif in self.__liste:
-            if not motif.estPlein():
-                return False
-        return True
+        self._cases: dict[tuple[int, int], Case] = {}
+
+    def addMotif(self, motif: Motif) -> None:
+
+        self._motifs.append(motif)
+
+        for case in motif.getCases():
+            self._cases[(case.x, case.y)] = case
+
+    def removeMotif(self, motif: Motif) -> None:
+
+        if motif in self._motifs:
+
+            self._motifs.remove(motif)
+
+            for case in motif.getCases():
+                self._cases.pop((case.x, case.y), None)
+
+    def getMotifs(self) -> list[Motif]:
+        return self._motifs
 
     def getNombreMotif(self) -> int:
-        """
-        Retourne le nombre de motifs dans la grille
-        :return: Un entier représentant le nombre de motifs
-        """
-        return len(self.__liste)
+        return len(self._motifs)
 
-
-    def addMotif(self, motif : Motif) -> None:
-        """
-        Ajoute un motif à la grille
-        :param motif: Le motif à ajouter
-        :return:
-        """
-        self.__liste.append(motif)
-
-
-    def removeMotif(self, motif : Motif) -> None:
-        """
-        Retire un motif de la grille
-        :param motif: Le motif à retirer
-        :return:
-        """
-        self.__liste.remove(motif)
-
-
-    def getMotifFromCase(self, c: Case) -> Motif | None:
-        """
-        Retourne le motif possèdant la case souhaité
-        :param c: La case à verifier
-        :return: Le motif auquel appartient la case
-        """
-        for motif in self.__liste:
-            for case in motif.getCases():
-                if c.getPosition() == case.getPosition():
-                    return motif
-        return None
-
-    def getMotifs(self):
-        """
-        Retourne une liste de motifs
-        :return: La liste des motifs de la grille
-        """
-        return self.__liste
-
-
-    def getCase(self, c: Case) -> Case | None:
-        """
-        Retourne la case nécessaire dans la grille
-        :param c: La case que l'on cherche
-        :return: La case cherché
-        """
-        for motif in self.__liste:
-            for case in motif.getCases():
-                if c.getPosition() == case.getPosition():
-                    return case
-        return None
-
+    def getCase(self, x: int, y: int) -> Case | None:
+        return self._cases.get((x, y))
 
     def getCases(self) -> list[Case]:
-        """
-        Renvoie l'ensemble des cases de la grille
-        :return: Une liste représentant toutes les cases de la grille
-        """
-        liste: list[Case] = []
-        for motif in self.__liste:
-            liste += motif.getCases()
-        return liste
+        return list(self._cases.values())
 
+    def getMotifFromCase(self, case: Case) -> Motif | None:
+        return case.motif
 
-    def setContenue(self, case: Case) -> None:
-        """
-        Change la valeur de la case
-        :param case: La case à changer
-        :param valeur: La valeur à attribuer à la case
-        :return:
-        """
-        motif = self.getMotifFromCase(case)
-        if motif:
-            motif.getCase(case.getPosition()[0], case.getPosition()[1]).setContenu(case.getContenu())
+    def setValeur(self, x: int, y: int, valeur: int | None) -> None:
 
+        case = self.getCase(x, y)
 
-    def getContenue(self, case: Case) -> int | None:
-        """
-        Donne la valeur de la case
-        :param case: La case dont on souhaite récupérer la valeur
-        :return:
-        """
-        motif = self.getMotifFromCase(case)
-        if motif:
-            return motif.getCase(case.getPosition()[0], case.getPosition()[1]).getContenu()
+        if case is not None:
+            case.contenu = valeur
+
+    def getValeur(self, x: int, y: int) -> int | None:
+
+        case = self.getCase(x, y)
+
+        if case is not None:
+            return case.contenu
+
         return None
 
+    def getVoisins(self, case: Case) -> list[Case]:
 
-    def chargerGrilleFromJson(self, file: str) -> None:
-        """
-        Charge dans la grille à partir d'un json
-        :param file: Chemin du fichier json
-        :return:
-        """
-        with open(file) as json_file:
-            data = json.load(json_file)
+        voisins = []
+
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+
+                if dx == 0 and dy == 0:
+                    continue
+
+                voisin = self.getCase(
+                    case.x + dx,
+                    case.y + dy
+                )
+
+                if voisin:
+                    voisins.append(voisin)
+
+        return voisins
+
+    def estValide(self) -> bool:
+
+        for motif in self._motifs:
+
+            if not motif.estValide():
+                return False
+
+        for case in self.getCases():
+
+            if case.contenu is None:
+                continue
+
+            for voisin in self.getVoisins(case):
+
+                if voisin.contenu == case.contenu:
+                    return False
+
+        return True
+
+    def estPleine(self) -> bool:
+
+        return all(
+            motif.estPlein()
+            for motif in self._motifs
+        )
+
+    def chargerGrilleFromJson(self, fichier: str) -> None:
+
+        self._motifs.clear()
+        self._cases.clear()
+
+        with open(fichier, encoding="utf-8") as f:
+
+            data = json.load(f)
+
             for valeur in data.values():
-                self.addMotif(buildMotifFromListe(valeur))
-
+                self.addMotif(
+                    buildMotifFromListe(valeur)
+                )
 
     def toDico(self) -> dict:
-        """
-        Retourne un dictionnaire créé à partir de la grille actuelle
-        :return: Un dictionnaire semblable à la grille
-        """
-        dico: dict = {}
-        nom_motif: str = "motif0"
-        for motif in self.__liste:
-            nom_motif = nom_motif[:5] + str(int(nom_motif[5:])+1)
-            liste_case_dico: list[list[int]] = []
 
-            liste_case: list[Case] = motif.getCases()
-            for case in liste_case:
-                liste_case_dico.append(case.toList())
+        resultat = {}
 
-            dico[nom_motif] = liste_case_dico
+        for i, motif in enumerate(self._motifs, start=1):
 
-        return dico
+            resultat[f"motif{i}"] = [
+                case.toList()
+                for case in motif.getCases()
+            ]
 
+        return resultat
 
-    def sauvegarderGrilleToJson(self, file: str) -> None:
-        """
-        Sauvegarde la grille au format json
-        :param file: Chemin du fichier json
-        :return:
-        """
+    def sauvegarderGrilleToJson(self, fichier: str) -> None:
 
-        with open(file, 'w') as json_file:
-            json.dump(self.toDico(), json_file, indent=4)
+        with open(fichier, "w", encoding="utf-8") as f:
+            json.dump(
+                self.toDico(),
+                f,
+                indent=4
+            )
 
     def afficherGrille(self):
-        # récupération de toutes les cases
-        cases = []
-        for motif in self.__liste:
-            cases.extend(motif.getCases())
 
-        # calcul des dimensions de la grille
-        max_x = max(case.getPosition()[0] for case in cases)
-        max_y = max(case.getPosition()[1] for case in cases)
+        cases = self.getCases()
 
-        # création de la grille vide
-        grille = [["." for _ in range(max_x + 1)] for _ in range(max_y + 1)]
+        if not cases:
+            return
 
-        # remplissage de la grille
+        max_x = max(case.x for case in cases)
+        max_y = max(case.y for case in cases)
+
+        grille = [
+            ["." for _ in range(max_x + 1)]
+            for _ in range(max_y + 1)
+        ]
+
         for case in cases:
-            x, y = case.getPosition()
-            grille[y][x] = str(case.getContenu()) if case.getContenu() else "."
 
-        # affichage
+            grille[case.y][case.x] = (
+                str(case.contenu)
+                if case.contenu is not None
+                else "."
+            )
+
         for ligne in grille:
             print(" ".join(ligne))
-
-if __name__ == "__main__":
-    grille = Grille()
-    grille.chargerGrilleFromJson("grilles/grille1.json")
-    #grille.sauvegarderGrilleToJson("grilles/grille1_new.json")
-    #print(grille.getContenue(Case(0,7)))
-    #grille.setContenue(Case(0,7, None))
-    #print(grille.getContenue(Case(0,7)))
-    #print(grille.getCases())
-    #print(grille.getCase(Case(0,7)))
-    #case_a = Case(1, 7, 3)
-    #grille.setContenue(case_a)
-    grille.afficherGrille()
-    #print(grille.estValide())
