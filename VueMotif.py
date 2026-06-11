@@ -2,8 +2,8 @@ import sys
 
 from PyQt6.QtWidgets import QWidget, QApplication, QGridLayout
 
-from Case_old import Case
-from Motif_old import Motif
+from Case import Case
+from Motif import Motif
 from VueCase import VueCase
 
 
