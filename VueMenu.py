@@ -2,8 +2,7 @@
 import sys
 
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMainWindow, \
-    QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMainWindow,QLabel
 
 
 class VueMenu(QMainWindow):
