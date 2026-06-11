@@ -3,7 +3,7 @@ import sys
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon, QGuiApplication, QPainter
 from PyQt6.QtWidgets import QWidget, QApplication
-from Case_old import Case
+from Case import Case
 
 
 class VueCase(QWidget):
