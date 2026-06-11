@@ -87,8 +87,8 @@ class Grille:
 
             if not motif.estValide():
                 return False
+        return True
 
-        for case in self.getCases():
 
     def estPleine(self):
         """
@@ -99,6 +99,7 @@ class Grille:
             if not motif.estPlein():
                 return False
         return True
+
 
     def getNombreMotif(self) -> int:
         """
@@ -125,20 +126,83 @@ class Grille:
         """
         self.__liste.remove(motif)
 
-        return all(
-            motif.estPlein()
-            for motif in self._motifs
-        )
 
-    def chargerGrilleFromJson(self, fichier: str) -> None:
+    def getMotifFromCase(self, c: Case) -> Motif | None:
+        """
+        Retourne le motif possèdant la case souhaité
+        :param c: La case à verifier
+        :return: Le motif auquel appartient la case
+        """
+        for motif in self.__liste:
+            for case in motif.getCases():
+                if c.getPosition() == case.getPosition():
+                    return motif
+        return None
 
-        self._motifs.clear()
-        self._cases.clear()
+    def getMotifs(self):
+        """
+        Retourne une liste de motifs
+        :return: La liste des motifs de la grille
+        """
+        return self.__liste
 
-        with open(fichier, encoding="utf-8") as f:
 
-            data = json.load(f)
+    def getCase(self, c: Case) -> Case | None:
+        """
+        Retourne la case nécessaire dans la grille
+        :param c: La case que l'on cherche
+        :return: La case cherché
+        """
+        for motif in self.__liste:
+            for case in motif.getCases():
+                if c.getPosition() == case.getPosition():
+                    return case
+        return None
 
+
+    def getCases(self) -> list[Case]:
+        """
+        Renvoie l'ensemble des cases de la grille
+        :return: Une liste représentant toutes les cases de la grille
+        """
+        liste: list[Case] = []
+        for motif in self.__liste:
+            liste += motif.getCases()
+        return liste
+
+
+    def setContenue(self, case: Case) -> None:
+        """
+        Change la valeur de la case
+        :param case: La case à changer
+        :param valeur: La valeur à attribuer à la case
+        :return:
+        """
+        motif = self.getMotifFromCase(case)
+        if motif:
+            motif.getCase(case.getPosition()[0], case.getPosition()[1]).setContenu(case.getContenu())
+
+
+    def getContenue(self, case: Case) -> int | None:
+        """
+        Donne la valeur de la case
+        :param case: La case dont on souhaite récupérer la valeur
+        :return:
+        """
+        motif = self.getMotifFromCase(case)
+        if motif:
+            return motif.getCase(case.getPosition()[0], case.getPosition()[1]).getContenu()
+        return None
+
+
+    def chargerGrilleFromJson(self, file: str) -> None:
+        """
+        Charge dans la grille à partir d'un json
+        :param file: Chemin du fichier json
+        :return:
+        """
+        with open(file) as json_file:
+            data = json.load(json_file)
             for valeur in data.values():
                 self.addMotif(
                     buildMotifFromListe(valeur)
@@ -196,6 +260,10 @@ class Grille:
             )
 
     def afficherGrille(self):
+        """
+        Permet d'afficher la grille
+        :return:
+        """
         # récupération de toutes les cases
         cases = []
         for motif in self.__liste:
