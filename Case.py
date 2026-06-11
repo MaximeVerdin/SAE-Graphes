@@ -1,46 +1,31 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+@dataclass
 class Case:
-    def __init__(self, x: int, y: int, c: int | None = 0) -> None:
-        """Méthode dédiée, constructeur de la classe"""
+    x: int
+    y: int
+    contenu: int | None = None
 
-        self.__abscisse: int = x
-        self.__ordonne: int = y
-        self.__contenu : int | None = None if c == 0 else c
-        self.__fixe : bool = True if self.__contenu else False
+    motif: "Motif | None" = None
 
-    def estFixe(self):
-        """
-        Retourne True si la case est fixe par rapport à la source, False sinon.
-        :return: Retourne True si la case est fixe
-        """
-        return self.__fixe
-
-
-    def setContenu(self, cakechose: int | None) -> None:
-        """Méthode publique, affecte le __contenu de l'objet."""
-        self.__contenu = cakechose
-
-
-    def getContenu(self) -> int | None:
-        """Méthode publique, renvoie le __contenu de l'objet."""
-        return self.__contenu
-
+    def __post_init__(self):
+        self.fixe = self.contenu is not None
 
     def getPosition(self) -> tuple[int, int]:
-        """Méthode publique, renvoie la position de l'objet : tuple (x, y)"""
-        return self.__abscisse, self.__ordonne
+        return self.x, self.y
 
-    def estVoisin(self, case: "Case") -> bool:
-        """
-        Méthode qui retourne True si la case est voisin, False sinon.
-        :param case: La case a verifier
-        :return: Retourne vrai si ils sont voisins
-        """
-        pos: tuple[int, int] = case.getPosition()
-        return not(abs(pos[0] - self.__abscisse) > 1 or abs(pos[1] - self.__ordonne) > 1)
+    def estVoisin(self, autre: "Case") -> bool:
+        dx = abs(self.x - autre.x)
+        dy = abs(self.y - autre.y)
 
-    def toList(self) -> list:
-        """
-        Retourne une liste de l'objet
-        :return: (x, y, valeur)
-        """
-        return [self.__abscisse, self.__ordonne, self.__contenu if self.__contenu else 0]
+        return dx <= 1 and dy <= 1 and not (dx == 0 and dy == 0)
+
+    def toList(self) -> list[int]:
+        return [
+            self.x,
+            self.y,
+            self.contenu if self.contenu is not None else 0
+        ]

@@ -1,9 +1,7 @@
 
 import sys
-from PyQt6.QtCore import QUrl, Qt,pyqtSignal
-from PyQt6.QtWidgets import (
-    QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget,QLabel
-)
+from PyQt6.QtCore import QDate, pyqtSignal,QUrl
+from PyQt6.QtWidgets import QComboBox, QLineEdit, QDateEdit, QTextEdit, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QCheckBox ,QPushButton,QStackedWidget
 from PyQt6.QtGui import QDesktopServices
 
 
