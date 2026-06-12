@@ -3,7 +3,7 @@ from Motif import Motif
 from Case import Case
 
 
-class SolveurSuguruBitmask:
+class Solveur:
     """
     Solveur Suguru basé sur bitmask avec backtracking.
     """
@@ -13,7 +13,6 @@ class SolveurSuguruBitmask:
         self.grille = grille
         self.cases = grille.getCases()
 
-        # index basé sur (x, y) -> FIX du bug "unhashable Case"
         self.index = {(c.x, c.y): i for i, c in enumerate(self.cases)}
         self.n = len(self.cases)
 
@@ -32,15 +31,14 @@ class SolveurSuguruBitmask:
     def bit(self, v: int) -> int:
         return 1 << (v - 1)
 
-    def full_mask(self, size: int) -> int:
+    def fullMask(self, size: int) -> int:
         return (1 << size) - 1
 
-    def count_bits(self, m: int) -> int:
+    def countBits(self, m: int) -> int:
         return bin(m).count("1")
 
 
     def init(self) -> None:
-
         for c in self.cases:
             i = self.index[(c.x, c.y)]
 
@@ -49,7 +47,7 @@ class SolveurSuguruBitmask:
                 self.dom[i] = self.bit(c.contenu)
             else:
                 self.val[i] = 0
-                self.dom[i] = self.full_mask(c.motif.tailleMotif())
+                self.dom[i] = self.fullMask(c.motif.tailleMotif())
 
 
     def ok(self, i: int, v: int) -> bool:
@@ -85,7 +83,7 @@ class SolveurSuguruBitmask:
         return True
 
 
-    def select_case(self) -> int:
+    def selectCase(self) -> int:
 
         best = -1
         best_score = 10**9
@@ -94,7 +92,7 @@ class SolveurSuguruBitmask:
             if self.val[i] != 0:
                 continue
 
-            score = self.count_bits(self.dom[i])
+            score = self.countBits(self.dom[i])
 
             if score < best_score:
                 best_score = score
@@ -103,7 +101,7 @@ class SolveurSuguruBitmask:
         return best
 
 
-    def build_grille_from_solution(self) -> Grille:
+    def buildGrilleFromSolution(self) -> Grille:
 
         new_grid = Grille()
         motif_map = {}
@@ -137,10 +135,10 @@ class SolveurSuguruBitmask:
 
     def solve(self) -> None:
 
-        i = self.select_case()
+        i = self.selectCase()
 
         if i == -1:
-            self.solutions.append(self.build_grille_from_solution())
+            self.solutions.append(self.buildGrilleFromSolution())
             return
 
         mask = self.dom[i]
@@ -203,7 +201,7 @@ if __name__ == "__main__":
     g = Grille()
     g.chargerGrilleFromJson("grilles/grille2.json")
 
-    solveur = SolveurSuguruBitmask(g)
+    solveur = Solveur(g)
     solutions = solveur.resoudre()
 
     print(len(solutions), "solutions")
