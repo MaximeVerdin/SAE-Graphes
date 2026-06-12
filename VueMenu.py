@@ -6,10 +6,10 @@ from PyQt6.QtGui import QDesktopServices
 
 
 class VueMenu(QWidget):
-    
-    #signal 
-    
-    ouvrirUrlClicked = pyqtSignal() 
+
+    #signal
+
+    ouvrirUrlClicked = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -17,6 +17,7 @@ class VueMenu(QWidget):
         self.setWindowTitle("Jeu de suguru")
         self.setStyleSheet("background-color: #C2C2C2")
 
+        
         self.stack = QStackedWidget()
         main_layout = QVBoxLayout(self)
         main_layout.addWidget(self.stack)
@@ -158,6 +159,37 @@ class VueMenu(QWidget):
         with open(sys.path[0] + "/fichiers_qss/Combinear.qss", "r") as f:
             self.setStyleSheet(f.read())
             self.redimensionner_boutons()
+
+    def ouvrir_url_regle(self):
+        self.ouvrirUrlClicked.emit()
+
+
+    def quitter_application(self):
+        self.quitterAppClicked.emit()
+
+
+    def param(self):
+        self.ParamClicked.emit()
+
+    def get_window_state(self):
+        return {
+            "geometry": self.saveGeometry(),
+            "windowState": self.saveState()
+        }
+
+    def set_window_state(self, state):
+        if "geometry" in state:
+            self.restoreGeometry(state["geometry"])
+        if "windowState" in state:
+            self.restoreState(state["windowState"])
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
