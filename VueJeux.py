@@ -10,6 +10,7 @@ from VueGrille import VueGrille
 class VueJeux(QMainWindow):
 
     caseCliquee: pyqtSignal = pyqtSignal(int, int)  # x=col, y=ligne
+    chiffreChoisi = pyqtSignal(int)
 
     def __init__(self, grille: Grille):
         super().__init__()
@@ -43,6 +44,8 @@ class VueJeux(QMainWindow):
             self.chiffres.append(QPushButton(f"{i}"))
             self.layout_chiffres.addWidget(self.chiffres[i-1])
 
+            self.chiffres[i-1].clicked.connect(lambda _, v=i: self.choisir_chiffre(v))
+
         self.widget_chiffres = QWidget()
         self.widget_chiffres.setLayout(self.layout_chiffres)
 
@@ -63,8 +66,22 @@ class VueJeux(QMainWindow):
 
 
         self.vue_grille.caseCliquee.connect(self.caseCliquee.emit)
+        self.chiffreChoisi.connect(self.choisir_chiffre)
         
         self.show()
+
+    def choisir_chiffre(self, valeur: int):
+        self.chiffreChoisi.emit(valeur)
+
+    def keyPressEvent(self, event):
+        key = event.text()
+
+        if key.isdigit():
+            valeur = int(key)
+
+            # option : filtrer selon taille max
+            if 1 <= valeur <= len(self.chiffres):
+                self.choisir_chiffre(valeur)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
