@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QPushButton, QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget
+from PyQt6.QtWidgets import QPushButton, QApplication, QVBoxLayout, QHBoxLayout, QWidget
 
 from Grille import Grille
 from VueGrille import VueGrille
@@ -39,7 +39,7 @@ class VueJeux(QWidget):
 
         self.widget_boutons = QWidget()
         self.widget_boutons.setLayout(self.layout_boutons)
-
+        self.setGeometry(200,200,2000,2000)
         # Chiffres
         self.chiffres: list[QPushButton] = []
 

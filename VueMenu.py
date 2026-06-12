@@ -20,6 +20,7 @@ class VueMenu(QMainWindow):
         
         self.setWindowTitle("Jeu de suguru")
         self.setStyleSheet("background-color: #C2C2C2")
+
         
 
      
@@ -214,21 +215,21 @@ class VueMenu(QMainWindow):
         with open(sys.path[0] + "/fichiers_qss/Integrid.qss", "r") as f:
             self.setStyleSheet(f.read())
             self.redimensionner_boutons()
-
+       
     def themeSombre(self):
         with open(sys.path[0] + "/fichiers_qss/Combinear.qss", "r") as f:
             self.setStyleSheet(f.read())
             self.redimensionner_boutons()
-            
+  
             
             
     def afficher_ecran_jeu(self, vue_jeux: QWidget):
         """Ajoute la vue de jeu au stack et l'affiche à l'écran."""
             
         self.page_jeu_actuelle = vue_jeux
-        self.stack.addWidget(self.page_jeu_actuelle)
+        self.stack.addWidget(self.page_jeu_actuelle)                 #il faudrait aussi retirer le widget actuel quand on affiche un nouveau pour eviter de saturer la mémoire
         self.stack.setCurrentWidget(self.page_jeu_actuelle)
-        self.stack.removeWidget(self.page_)
+
         
 
     def afficher_menu_principal(self):
