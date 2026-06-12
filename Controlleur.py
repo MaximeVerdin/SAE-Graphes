@@ -132,7 +132,7 @@ class Controlleur():
             i = random.choice(tuple(self.solutions_valides))
             self.modele.setValeur(
                 *self.case_actuelle,
-                self.solutions[i].getValeur(*self.case_actuelle)
+                self.solutions[i].getValeur(self.case_actuelle)
             )
             self.setValue(self.case_actuelle[0], self.case_actuelle[1], self.solutions[i].getValeur(*self.case_actuelle))
 
