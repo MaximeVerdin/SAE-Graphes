@@ -1,15 +1,16 @@
 
 import sys
-from PyQt6.QtCore import QDate, pyqtSignal,QUrl
-from PyQt6.QtWidgets import QComboBox, QLineEdit, QDateEdit, QTextEdit, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QCheckBox ,QPushButton,QStackedWidget
-from PyQt6.QtGui import QDesktopServices
+
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMainWindow, \
+    QLabel
 
 
-class VueMenu(QWidget):
-    
-    #signal 
-    
-    ouvrirUrlClicked = pyqtSignal() 
+class VueMenu(QMainWindow):
+
+    #signal
+
+    ouvrirUrlClicked = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -17,6 +18,7 @@ class VueMenu(QWidget):
         self.setWindowTitle("Jeu de suguru")
         self.setStyleSheet("background-color: #C2C2C2")
 
+        
         self.stack = QStackedWidget()
         main_layout = QVBoxLayout(self)
         main_layout.addWidget(self.stack)
@@ -128,6 +130,9 @@ class VueMenu(QWidget):
 
         self.show()
 
+            
+            
+            
     def redimensionner_boutons(self):
         largeur = max(120, min(self.width() // 4, 600))
         hauteur = max(30, min(self.height() // 10, 150))
@@ -146,6 +151,7 @@ class VueMenu(QWidget):
             bouton.setFixedSize(largeur, hauteur)
 
     def resizeEvent(self, event):
+        """Appelé automatiquement à chaque redimensionnement."""
         self.redimensionner_boutons()
         super().resizeEvent(event)
 
@@ -159,6 +165,28 @@ class VueMenu(QWidget):
             self.setStyleSheet(f.read())
             self.redimensionner_boutons()
 
+    def ouvrir_url_regle(self):
+        self.ouvrirUrlClicked.emit()
+
+
+    def quitter_application(self):
+        self.quitterAppClicked.emit()
+            
+        
+    def param(self):
+        self.ParamClicked.emit()
+
+    def get_window_state(self):
+        return {
+            "geometry": self.saveGeometry(),
+            "windowState": self.saveState()
+        }
+
+    def set_window_state(self, state):
+        if "geometry" in state:
+            self.restoreGeometry(state["geometry"])
+        if "windowState" in state:
+            self.restoreState(state["windowState"])
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

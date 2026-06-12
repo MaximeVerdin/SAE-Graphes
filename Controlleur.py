@@ -1,4 +1,7 @@
 import random
+
+from PyQt6.QtCore import QSettings
+
 from VueMenu import *
 from Grille import Grille
 from pathlib import Path
@@ -8,7 +11,11 @@ class Controlleur:
         self.modele: Grille = Grille()
         self.vue = 0
 
+        self.settings = QSettings("MonEntreprise", "MonApp")
         self.case_actuelle: None | tuple[int, int] = None
+
+        self.load_settings()
+
         
         self.vue.ouvrirUrlClicked.connect(self.ouvrir_url_regle)
         self.vue.quitterAppClicked.connect(self.quitter_application)
@@ -20,6 +27,7 @@ class Controlleur:
                 
     def quitter_application(self):
         """Ferme  la fenêtre"""
+        self.save_settings()
         self.close()
 
     def save(self, nom: str) -> None:
@@ -37,3 +45,21 @@ class Controlleur:
             if json_files:
                 self.modele.chargerGrilleFromJson(random.choice(json_files))
 
+
+    def load_settings(self):
+        geometry = self.settings.value("geometry")
+        window_state = self.settings.value("windowState")
+
+        state = {}
+        if geometry:
+            state["geometry"] = geometry
+        if window_state:
+            state["windowState"] = window_state
+
+        self.vue.set_window_state(state)
+
+    def save_settings(self):
+        state = self.vue.get_window_state()
+
+        self.settings.setValue("geometry", state["geometry"])
+        self.settings.setValue("windowState", state["windowState"])

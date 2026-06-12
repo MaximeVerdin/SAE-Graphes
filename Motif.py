@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from Case import Case
 
-class Motif(object) :
-    """Classe définnisant un motif composé d'objet de type Case"""
+class Motif:
 
     def __init__(self):
         self._cases: list[Case] = []
