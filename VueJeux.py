@@ -7,9 +7,12 @@ from Grille import Grille
 from VueGrille import VueGrille
 
 
-class VueJeux(QMainWindow):
+class VueJeux(QWidget):
 
     caseCliquee: pyqtSignal = pyqtSignal(int, int)  # x=col, y=ligne
+    sauvegarderClicked = pyqtSignal()  
+    accueilClicked = pyqtSignal() 
+    recommencerClicked = pyqtSignal()
 
     def __init__(self, grille: Grille):
         super().__init__()
@@ -18,16 +21,20 @@ class VueJeux(QMainWindow):
 
         # Boutons
         self.bouton_recommencer = QPushButton("Recommencer")
+        self.bouton_recommencer.clicked.connect(self.recommencerClicked.emit)
+        
         self.bouton_sauvegarder = QPushButton("Sauvegarder")
-        self.bouton_acceuil = QPushButton("Accueil")
-
+        self.bouton_sauvegarder.clicked.connect(self.sauvegarderClicked.emit)
+        
+        self.bouton_accueil = QPushButton("Accueil")
+        self.bouton_accueil.clicked.connect(self.accueilClicked.emit)
 
         # Layout boutons
         self.layout_boutons = QHBoxLayout()
 
         self.layout_boutons.addWidget(self.bouton_recommencer)
         self.layout_boutons.addWidget(self.bouton_sauvegarder)
-        self.layout_boutons.addWidget(self.bouton_acceuil)
+        self.layout_boutons.addWidget(self.bouton_accueil)
 
 
         self.widget_boutons = QWidget()
@@ -56,9 +63,7 @@ class VueJeux(QMainWindow):
         self.layout.setStretch(1, 5)
         self.layout.setStretch(2, 1)
 
-        self.widget_principal = QWidget()
-        self.widget_principal.setLayout(self.layout)
-        self.setCentralWidget(self.widget_principal)
+        self.setLayout(self.layout)
 
 
 
