@@ -1,27 +1,37 @@
 
 import sys
+from PyQt6.QtCore import  pyqtSignal
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget,QLabel,QStatusBar,QMainWindow
 
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMainWindow, \
-    QLabel
 
 
 class VueMenu(QMainWindow):
-
-    #signal
-
-    ouvrirUrlClicked = pyqtSignal()
+    
+    #signal 
+    
+    ouvrirUrlClicked = pyqtSignal() 
+    chargerClicked = pyqtSignal()
+    nouveauClicked = pyqtSignal()
 
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Jeu de suguru")
         self.setStyleSheet("background-color: #C2C2C2")
-
         
+
+     
         self.stack = QStackedWidget()
         main_layout = QVBoxLayout(self)
         main_layout.addWidget(self.stack)
+        self.setCentralWidget(self.stack)
+        self.barreStatus = self.statusBar()
+        self.barreStatus.showMessage('Ready', 5000)
+        
+        self.barreMenu = self.menuBar()
+        
+        file_menu = self.barreMenu.addMenu('&Fichier')
+    
 
         # page pricipal du menu
         self.page1 = QWidget()
@@ -34,6 +44,7 @@ class VueMenu(QMainWindow):
         self.boutonRegle = QPushButton("Régle")
         self.boutonRegle.setStyleSheet("background-color: #AFAFAF;")
         self.boutonRegle.setFixedSize(80, 25)
+        self.boutonRegle.clicked.connect(self.ouvrirUrlClicked.emit)
 
         self.boutonJouer = QPushButton("Jouer")
         self.boutonJouer.setStyleSheet("background-color: #AFAFAF;")
@@ -75,6 +86,11 @@ class VueMenu(QMainWindow):
         self.boutonSombre = QPushButton("Thème sombre")
         self.boutonSombre.setStyleSheet("background-color: #AFAFAF;")
         self.boutonSombre.clicked.connect(self.themeSombre)
+        
+        
+        
+        
+        
 
         self.boutonRetour2 = QPushButton("Retour")
         self.boutonRetour2.setStyleSheet("background-color: #AFAFAF;")
@@ -102,9 +118,11 @@ class VueMenu(QMainWindow):
 
         self.boutonNouveau = QPushButton("Nouvelle partie")
         self.boutonNouveau.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonNouveau.clicked.connect(self.nouveauClicked.emit)
 
         self.boutonCharger = QPushButton("Charger partie")
         self.boutonCharger.setStyleSheet("background-color: #AFAFAF;")
+        self.boutonCharger.clicked.connect(self.chargerClicked.emit)
 
         self.boutonRetour3 = QPushButton("Retour")
         self.boutonRetour3.setStyleSheet("background-color: #AFAFAF;")
@@ -122,12 +140,13 @@ class VueMenu(QMainWindow):
         vlayout_page3.addWidget(self.espace3)
         vlayout_page3.addLayout(hlayout_centre3)
         vlayout_page3.addStretch(1)
+        
 
         # ajout dans le stacked widget
         self.stack.addWidget(self.page1)
         self.stack.addWidget(self.page2)
         self.stack.addWidget(self.page3)
-
+        
         self.show()
 
             
@@ -164,6 +183,8 @@ class VueMenu(QMainWindow):
         with open(sys.path[0] + "/fichiers_qss/Combinear.qss", "r") as f:
             self.setStyleSheet(f.read())
             self.redimensionner_boutons()
+            
+  
 
     def ouvrir_url_regle(self):
         self.ouvrirUrlClicked.emit()
@@ -188,7 +209,7 @@ class VueMenu(QMainWindow):
         if "windowState" in state:
             self.restoreState(state["windowState"])
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    widget = VueMenu()
-    sys.exit(app.exec())
+#if __name__ == '__main__':
+#   app = QApplication(sys.argv)
+ #   widget = VueMenu()
+  #  sys.exit(app.exec())
