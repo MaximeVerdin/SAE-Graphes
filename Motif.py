@@ -117,7 +117,7 @@ def buildMotifFromListe(l: list) -> Motif:
     """
     motif = Motif()
 
-    for x, y, valeur in liste:
+    for x, y, valeur in l:
 
         motif.ajouterCase(
             Case(

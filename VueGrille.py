@@ -21,6 +21,7 @@ class VueGrille(QWidget):
         self.case_selectionnee = None  # (x, y)
 
         self.setWindowTitle("Vue Grille")
+        self.show()
 
     def resizeEvent(self, event):
         self.update()
