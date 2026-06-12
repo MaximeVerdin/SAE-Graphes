@@ -1,11 +1,12 @@
 
 import sys
-from PyQt6.QtCore import QDate, pyqtSignal,QUrl
-from PyQt6.QtWidgets import QComboBox, QLineEdit, QDateEdit, QTextEdit, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QCheckBox ,QPushButton,QStackedWidget
-from PyQt6.QtGui import QDesktopServices
+
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMainWindow, \
+    QLabel
 
 
-class VueMenu(QWidget):
+class VueMenu(QMainWindow):
 
     #signal
 
@@ -129,6 +130,9 @@ class VueMenu(QWidget):
 
         self.show()
 
+            
+            
+            
     def redimensionner_boutons(self):
         largeur = max(120, min(self.width() // 4, 600))
         hauteur = max(30, min(self.height() // 10, 150))
@@ -147,6 +151,7 @@ class VueMenu(QWidget):
             bouton.setFixedSize(largeur, hauteur)
 
     def resizeEvent(self, event):
+        """Appelé automatiquement à chaque redimensionnement."""
         self.redimensionner_boutons()
         super().resizeEvent(event)
 
@@ -166,8 +171,8 @@ class VueMenu(QWidget):
 
     def quitter_application(self):
         self.quitterAppClicked.emit()
-
-
+            
+        
     def param(self):
         self.ParamClicked.emit()
 
@@ -182,15 +187,6 @@ class VueMenu(QWidget):
             self.restoreGeometry(state["geometry"])
         if "windowState" in state:
             self.restoreState(state["windowState"])
-
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
