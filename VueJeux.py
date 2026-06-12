@@ -10,7 +10,7 @@ from VueGrille import VueGrille
 class VueJeux(QWidget):
 
     caseCliquee: pyqtSignal = pyqtSignal(int, int)  # x=col, y=ligne
-    chiffreChoisi = pyqtSignal(int)
+    chiffreChoisi: pyqtSignal = pyqtSignal(int)
     sauvegarderClicked = pyqtSignal()
     accueilClicked = pyqtSignal()
     recommencerClicked = pyqtSignal()
