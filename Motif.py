@@ -2,69 +2,26 @@ from __future__ import annotations
 
 from Case import Case
 
-class Motif(object) :
-    """Classe définnisant un motif composé d'objet de type Case"""
+class Motif:
 
     def __init__(self):
-        
-        self.__liste_cases: list[Case] = []
+        self._cases: list[Case] = []
 
+    def ajouterCase(self, case: Case) -> None:
+        case.motif = self
+        self._cases.append(case)
 
-    def estValide(self) -> bool:
-        """
-        Verifie si le motif est valide
-        :return: Retourne True si la grille est valide, False sinon
-        """
-        liste_valeurs = []
-        for case in self.__liste_cases:
-            if not case.getContenu() in liste_valeurs or not(case.getContenu()):
-                liste_valeurs.append(case.getContenu())
-            else:
-                return False
-        return True
+    def supprimerCase(self, case: Case) -> None:
+        if case in self._cases:
+            self._cases.remove(case)
+            case.motif = None
 
+    def getCases(self) -> list[Case]:
+        return self._cases
 
-    def estPlein(self):
-        """
-        Verifie si le motif est plein
-        :return: Retourne True si la grille est plein, False sinon
-        """
-        liste_valeurs = []
-        for case in self.__liste_cases:
-            if not case.getContenu() in liste_valeurs and not case.getPosition():
-                liste_valeurs.append(case.getContenu())
-                
-        return len(liste_valeurs) == self.tailleMotif()
-
-
-    def ajouterCase(self,c : Case) ->None:
-        """ajoute une case du motif
-            :param c: un objet de type Case"""
-        self.__liste_cases.append(c)
-        
-        
-    def supprimerCase(self,c : Case) ->None:
-        """supprime une case du motif
-           :param c: un objet de type Case
-        """
-        for case in self.__liste_cases:
-            if c in self.__liste_cases:
-                self.__liste_cases.remove(c)
-                
-                
-    def getCases(self)->list[Case]:
-        """retourne une liste de toute les cases du motif
-            :return :une liste d'objet de type Case        
-        """
-        return self.__liste_cases
-    
-    
-    def getCase(self,x :int,y :int)->Case:
-        """retourne une seule case en fonction de ses coordonnée
-           :return: un objet de type Case
-        """
-        for case in self.__liste_cases:
-            if case.getPosition() == (x,y):
+    def getCase(self, x: int, y: int) -> Case | None:
+        for case in self._cases:
+            if case.x == x and case.y == y:
                 return case
         return None
 
@@ -109,15 +66,11 @@ class Motif(object) :
         return True
 
 
-def buildMotifFromListe(l: list) -> Motif:
-    """
-    remplie un motif avec toutes les cases qu'il contient
-    :param l: Liste contenant les cases sous forme de listes.
-    :return: retourne un motif
-    """
+def buildMotifFromListe(liste: list) -> Motif:
+
     motif = Motif()
 
-    for x, y, valeur in l:
+    for x, y, valeur in liste:
 
         motif.ajouterCase(
             Case(
