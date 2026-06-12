@@ -34,6 +34,12 @@ class Grille:
     def getNombreMotif(self) -> int:
         return len(self._motifs)
 
+    def getTaillePlusGrandMotif(self) -> int:
+        return max(
+            (motif.tailleMotif() for motif in self.getMotifs()),
+            default=0
+        )
+
     def getCase(self, x: int, y: int) -> Case | None:
         return self._cases.get((x, y))
 

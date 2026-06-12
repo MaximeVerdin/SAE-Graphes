@@ -1,16 +1,8 @@
 
 import sys
-from PyQt6.QtCore import QDate, pyqtSignal,QUrl
-from PyQt6.QtWidgets import QComboBox, QLineEdit, QDateEdit, QTextEdit, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QCheckBox ,QPushButton,QStackedWidget
-from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMainWindow
 
-
-
-
-from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget
-from PyQt6.QtCore import Qt
-
-class VueMenu(QWidget):
+class VueMenu(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -131,11 +123,18 @@ class VueMenu(QWidget):
         
     def param(self):
         self.ParamClicked.emit()
-    
-    
-    
-    
-    
+
+    def get_window_state(self):
+        return {
+            "geometry": self.saveGeometry(),
+            "windowState": self.saveState()
+        }
+
+    def set_window_state(self, state):
+        if "geometry" in state:
+            self.restoreGeometry(state["geometry"])
+        if "windowState" in state:
+            self.restoreState(state["windowState"])
     
     
     
