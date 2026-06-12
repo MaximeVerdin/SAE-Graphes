@@ -5,11 +5,14 @@ from PyQt6.QtCore import QSettings
 from VueMenu import *
 from Grille import Grille
 from pathlib import Path
+from PyQt6.QtCore import QUrl 
+from PyQt6.QtGui import QDesktopServices
 
-class Controlleur:
+class Controlleur():
     def __init__(self) -> None:
+        
         self.modele: Grille = Grille()
-        self.vue = 0
+        self.vue = VueMenu()
 
         self.settings = QSettings("MonEntreprise", "MonApp")
         self.case_actuelle: None | tuple[int, int] = None
@@ -18,34 +21,35 @@ class Controlleur:
 
         
         self.vue.ouvrirUrlClicked.connect(self.ouvrir_url_regle)
-        self.vue.quitterAppClicked.connect(self.quitter_application)
-        self.vue.paramClicked.connect(self.)
+   
+        self.vue.chargerClicked.connect(self.charger)
+        self.vue.nouveauClicked.connect(self.nouveau)
+        
 
     def ouvrir_url_regle(self):
+      
         url = QUrl("https://www.innoludic.com/fr/2015-04-27-17-17-03/regles-du-suguru")
         QDesktopServices.openUrl(url)
-                
-    def quitter_application(self):
-        """Ferme  la fenêtre"""
-        self.save_settings()
-        self.close()
+   
+    
 
     def save(self, nom: str) -> None:
         self.modele.sauvegarderGrilleToJson(f"saves/{nom}.json")
 
-    def charger(self, type: str, nom: str | None = None) -> None:
-        if type == "save":
-            if nom:
-                self.modele.chargerSaveFromJson(f"saves/{nom}.json")
-        elif type == "new":
-            dossier_grilles = Path("grilles")
+    def charger(self,  nom: str ) -> None:
+         if nom:
+            self.modele.chargerSaveFromJson(f"saves/{nom}.json")
+        
+            
+    def nouveau(self):          
+          
+        dossier_grilles = Path("grilles")
 
-            json_files = list(dossier_grilles.glob("*.json"))
+        json_files = list(dossier_grilles.glob("*.json"))
 
-            if json_files:
-                self.modele.chargerGrilleFromJson(random.choice(json_files))
-
-
+        if json_files:
+            self.modele.chargerGrilleFromJson(random.choice(json_files))
+            
     def load_settings(self):
         geometry = self.settings.value("geometry")
         window_state = self.settings.value("windowState")
@@ -59,7 +63,13 @@ class Controlleur:
         self.vue.set_window_state(state)
 
     def save_settings(self):
-        state = self.vue.get_window_state()
-
-        self.settings.setValue("geometry", state["geometry"])
-        self.settings.setValue("windowState", state["windowState"])
+        state = self.vue.get_window_state()        
+    
+                
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    
+    # L'instanciation lance le contrôleur, crée la vue et lie les signaux
+    controlleur = Controlleur()
+    
+    sys.exit(app.exec())
