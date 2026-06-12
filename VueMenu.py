@@ -2,6 +2,8 @@
 import sys
 from PyQt6.QtCore import  pyqtSignal
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget,QLabel,QStatusBar,QMainWindow
+from PyQt6.QtGui import QAction
+from VueJeux import VueJeux
 
 
 
@@ -15,7 +17,7 @@ class VueMenu(QMainWindow):
 
     def __init__(self):
         super().__init__()
-
+        
         self.setWindowTitle("Jeu de suguru")
         self.setStyleSheet("background-color: #C2C2C2")
         
@@ -26,11 +28,36 @@ class VueMenu(QMainWindow):
         main_layout.addWidget(self.stack)
         self.setCentralWidget(self.stack)
         self.barreStatus = self.statusBar()
-        self.barreStatus.showMessage('Ready', 5000)
+        self.barreStatus.showMessage('OKKKKKKKK',5000)
         
         self.barreMenu = self.menuBar()
         
+        #Fichier dans la barre d'outils
         file_menu = self.barreMenu.addMenu('&Fichier')
+        
+        actionNouveau =QAction('&Nouveau', self)
+        actionNouveau.triggered.connect(self.nouveauClicked.emit)
+        file_menu.addAction(actionNouveau)
+        
+        actionCharger =QAction('&Charger', self)
+        actionCharger.triggered.connect(self.chargerClicked.emit)
+        file_menu.addAction(actionCharger)
+        
+        
+        
+        # Theme dans la barre d'outils
+        file_menu = self.barreMenu.addMenu('&Theme')
+        
+        
+        #option theme clair
+        actionThemeClair = QAction("&Théme clair", self)
+        actionThemeClair.triggered.connect(self.themeClaire)
+        file_menu.addAction(actionThemeClair)
+        
+        #option theme sombre
+        actionThemeSombre = QAction("&Théme sombre", self)
+        actionThemeSombre.triggered.connect(self.themeSombre)
+        file_menu.addAction(actionThemeSombre)
     
 
         # page pricipal du menu
@@ -141,11 +168,20 @@ class VueMenu(QMainWindow):
         vlayout_page3.addLayout(hlayout_centre3)
         vlayout_page3.addStretch(1)
         
+        #page 4
+        
+        
+        
 
         # ajout dans le stacked widget
         self.stack.addWidget(self.page1)
         self.stack.addWidget(self.page2)
         self.stack.addWidget(self.page3)
+
+        
+
+        
+        self.themeClaire()
         
         self.show()
 
@@ -184,6 +220,20 @@ class VueMenu(QMainWindow):
             self.setStyleSheet(f.read())
             self.redimensionner_boutons()
             
+            
+            
+    def afficher_ecran_jeu(self, vue_jeux: QWidget):
+        """Ajoute la vue de jeu au stack et l'affiche à l'écran."""
+            
+        self.page_jeu_actuelle = vue_jeux
+        self.stack.addWidget(self.page_jeu_actuelle)
+        self.stack.setCurrentWidget(self.page_jeu_actuelle)
+        self.stack.removeWidget(self.page_)
+        
+
+    def afficher_menu_principal(self):
+        """Redirige vers le menu principal (page 1)."""
+        self.stack.setCurrentWidget(self.page1)
   
 
     def ouvrir_url_regle(self):
