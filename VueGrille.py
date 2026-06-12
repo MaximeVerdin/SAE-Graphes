@@ -69,7 +69,7 @@ class VueGrille(QWidget):
         self.taille_case = self.calculer_taille_case()
         dx, dy = self.calculer_offset()
 
-        pen = QPen(Qt.GlobalColor.black)
+        pen = QPen(Qt.GlobalColor.white)
         painter.setPen(pen)
 
         for case in self.grille.getCases():
@@ -113,7 +113,7 @@ class VueGrille(QWidget):
                 self.taille_case,
                 overlay
             )
-
+        
         pen = QPen(Qt.GlobalColor.black)
         pen.setWidth(max(2, self.taille_case // 15))
         painter.setPen(pen)
